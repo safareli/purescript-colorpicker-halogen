@@ -36,17 +36,20 @@ type InputProps = Array (HP.IProp I.HTMLinput (InputQuery Unit))
 
 type InputBijection = Iso' C.Color InputState
 
+hslaEq ∷ C.Color -> C.Color -> Boolean
+hslaEq a b = C.toHSLA a `Rec.equal` C.toHSLA b
+
 eval ∷ ∀ m. InputBijection → InputQuery ~> InputDSL m
 eval bij = case _ of
   Receive c next → do
     st ← H.get
-    unless (C.toHSLA st.color `Rec.equal` C.toHSLA c) $ H.put $ view bij c
+    unless (st.color `hslaEq` c) $ H.put $ view bij c
     pure next
   Update s next → do
     H.modify (_{ input = s })
     st ← H.get
     let newColor = review bij st
-    when (newColor /= st.color) do
+    unless (st.color `hslaEq` newColor) do
       H.modify (_{ color = newColor })
       H.raise newColor
     pure next
