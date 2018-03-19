@@ -9,8 +9,8 @@
   display: inline-flex;
 }
 
-.IsLight { color: black; }
-.IsDark { color: white; }
+.ColorPicker--IsLight .ColorPicker-field { color: black; }
+.ColorPicker--IsDark .ColorPicker-field { color: white; }
 
 .ColorPicker--small .ColorPicker-field  { width: 10em; }
 .ColorPicker--small .ColorPicker-slider { width: 1em;  }

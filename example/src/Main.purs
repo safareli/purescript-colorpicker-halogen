@@ -69,10 +69,26 @@ example = H.parentComponent
 
 render ∷ ∀ m r. MonadAff (HCD.DragEffects r) m ⇒ State → HTML m
 render {color: c, palette} =
-  HH.div [ HP.classes [ H.ClassName "ColorPicker", H.ClassName "ColorPicker--large", H.ClassName "ColorPicker--inline" ]]
+  HH.div
+    [ HP.classes 
+        [ H.ClassName "ColorPicker"
+        , if C.isLight c
+            then HH.ClassName "ColorPicker--IsLight"
+            else HH.ClassName "ColorPicker--IsDark"
+        , H.ClassName "ColorPicker--large", H.ClassName "ColorPicker--inline" 
+        ]
+    ]
     $ [ HH.div [ HP.classes [ H.ClassName "ColorPicker-dragger" ]]
-          [ HH.slot' CP.cp1 15 (SVDrag.component' [ HP.class_ $ HH.ClassName "ColorPicker-field"] [HP.class_ $ HH.ClassName "ColorPicker-fieldSelector"]) c $ HE.input HandleMsg
-          , HH.slot' CP.cp1 14 (HueDrag.component' [ HP.class_ $ HH.ClassName "ColorPicker-slider" ] [ HP.class_ $ HH.ClassName "ColorPicker-sliderSelector"]) c $ HE.input HandleMsg
+          [ HH.slot' CP.cp1 15
+              (SVDrag.component'
+                [ HP.class_ $ HH.ClassName "ColorPicker-field"]
+                [ HP.class_ $ HH.ClassName "ColorPicker-fieldSelector"]) c
+              $ HE.input HandleMsg
+          , HH.slot' CP.cp1 14
+              (HueDrag.component'
+                [ HP.class_ $ HH.ClassName "ColorPicker-slider" ]
+                [ HP.class_ $ HH.ClassName "ColorPicker-sliderSelector"]) c
+              $ HE.input HandleMsg
           ]
       , HH.div [ HP.classes [ H.ClassName "ColorPicker-aside" ]]
           [ HH.div [ HP.classes [ H.ClassName "ColorPicker-stage" ]]
