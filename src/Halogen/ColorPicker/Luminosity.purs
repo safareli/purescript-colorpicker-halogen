@@ -8,7 +8,7 @@ import Halogen.HTML.Events as HE
 import Halogen.HTML.Properties as HP
 
 component' ∷ ∀ m. HCC.InputProps → HCC.ColorModifier m
-component' props = HCC.inputComponent HCC._Luminosity $ render props
+component' props = HCC.inputComponent HCC.cLuminosity $ render props
 
 component ∷ ∀ m. HCC.ColorModifier m
 component = component' []
@@ -22,4 +22,5 @@ render props state =
        , HP.type_ HP.InputNumber
        , HP.min 0.0
        , HP.max 1.0
+       , HE.onBlur $ HE.input $ const HCC.Blur
        ]
